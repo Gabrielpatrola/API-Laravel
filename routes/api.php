@@ -12,12 +12,15 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::post('register', 'API\RegisterController@register');
-Route::middleware('auth:api')->group( function () {
-	Route::resource('products', 'API\ProductController');
+Route::namespace('API')->name('api.')->group(function(){
+	Route::prefix('products')->group(function(){
+		Route::get('/', 'ProductController@index')->name('index_products');
+		Route::get('/{id}', 'ProductController@show')->name('single_products');
+		Route::post('/', 'ProductController@store')->name('store_products');
+		Route::put('/{id}', 'ProductController@update')->name('update_products');
+		Route::delete('/{id}', 'ProductController@delete')->name('delete_products');
+	});
 });
