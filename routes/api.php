@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/* Route::middleware('auth:api')->group(function () {
 Route::namespace('API')->name('api.')->group(function(){
 	Route::prefix('products')->group(function(){
 		Route::get('/', 'ProductController@index')->name('index_products');
@@ -23,4 +25,14 @@ Route::namespace('API')->name('api.')->group(function(){
 		Route::put('/{id}', 'ProductController@update')->name('update_products');
 		Route::delete('/{id}', 'ProductController@delete')->name('delete_products');
 	});
+});
+}); */
+
+Route::post('login', 'PassportController@login');
+Route::post('register', 'PassportController@register');
+ 
+Route::middleware('auth:api')->group(function () {
+    Route::get('user', 'PassportController@details');
+ 
+    Route::resource('products', 'ProductController');
 });
